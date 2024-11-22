@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-env --allow-write=./db.sqlite3 index.ts",
+    "compile": "deno compile --allow-net --allow-read --allow-env --allow-write=./db.sqlite3 index.ts"
+  },
+  "imports": {
+    "@unixfox/instant-system": "jsr:@unixfox/instant-system@^0.0.12",
+    "kdbush": "npm:kdbush@4.0.2",
+    "geokdbush": "npm:geokdbush@2.0.1",
+    "sequelize": "npm:sequelize@6.37.5",
+    "pg": "npm:pg@8.13.1",
+    "dotenv/load": "jsr:@std/dotenv@0.225.2/load",
+    "croner": "jsr:@hexagon/croner@9.0.0"
+  },
+  "unstable": ["kv"]
+}
