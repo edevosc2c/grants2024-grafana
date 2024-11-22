@@ -1,0 +1,303 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 14,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "bdylghfq7d340a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {
+            "server": "streets",
+            "showLabels": true,
+            "theme": "light"
+          },
+          "name": "Layer 0",
+          "opacity": 1,
+          "tooltip": true,
+          "type": "carto"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "arrow": -1,
+              "style": {
+                "color": {
+                  "field": "extract",
+                  "fixed": "dark-green"
+                },
+                "lineWidth": 2,
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "extract",
+                  "fixed": 5,
+                  "max": 7,
+                  "min": 7
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "fixed": "OK",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 60,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "latitude",
+              "longitude": "longitude",
+              "mode": "auto"
+            },
+            "name": "Layer 1",
+            "opacity": 1,
+            "tooltip": true,
+            "type": "route"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": 45.589806,
+          "lon": 5.932244,
+          "zoom": 12.52
+        }
+      },
+      "pluginVersion": "11.4.0-79146",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "bdylghfq7d340a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT time, EXTRACT(EPOCH FROM \"time\"), latitude, longitude, \"busId\"\n  FROM buslocation\n  WHERE $__timeFilter(\"time\") AND \"busId\" LIKE (${busid}) AND \"line\" LIKE (${line}) AND \"direction\" LIKE (${direction})\n  ORDER BY time\n  DESC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "alias": "\"time\"",
+                "parameters": [
+                  {
+                    "name": "\"time\"",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "latitude",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "longitude",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "\"busId\"",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [],
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [],
+              "id": "8998a9a9-0123-4456-b89a-b1921602a117",
+              "type": "group"
+            }
+          },
+          "table": "buslocation"
+        }
+      ],
+      "title": "Bus route",
+      "type": "geomap"
+    }
+  ],
+  "preload": false,
+  "refresh": "5s",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "'%'",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "bdylghfq7d340a"
+        },
+        "definition": "SELECT distinct on (\"busId\") \"busId\"\n  FROM buslocation\n  WHERE $__timeFilter(\"time\") AND \"line\" LIKE (${line}) AND \"direction\" LIKE (${direction})\n  ORDER by \"busId\", time\n  DESC;",
+        "includeAll": true,
+        "label": "Bus ID",
+        "name": "busid",
+        "options": [],
+        "query": "SELECT distinct on (\"busId\") \"busId\"\n  FROM buslocation\n  WHERE $__timeFilter(\"time\") AND \"line\" LIKE (${line}) AND \"direction\" LIKE (${direction})\n  ORDER by \"busId\", time\n  DESC;",
+        "refresh": 2,
+        "regex": "",
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "allValue": "%",
+        "current": {
+          "text": "A",
+          "value": "A"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "bdylghfq7d340a"
+        },
+        "definition": "SELECT distinct (\"line\") from buslocation;",
+        "includeAll": true,
+        "name": "line",
+        "options": [],
+        "query": "SELECT distinct (\"line\") from buslocation;",
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "'%'",
+        "current": {
+          "text": "$__all",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "direction",
+        "name": "direction",
+        "options": [
+          {
+            "selected": false,
+            "text": "OUTWARD",
+            "value": "OUTWARD"
+          },
+          {
+            "selected": false,
+            "text": "RETURN",
+            "value": "RETURN"
+          }
+        ],
+        "query": "OUTWARD, RETURN",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Route of a bus",
+  "uid": "bdyo3tv6pnvggd",
+  "version": 12,
+  "weekStart": ""
+}
